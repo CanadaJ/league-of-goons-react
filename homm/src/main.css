@@ -1,0 +1,560 @@
+.jumbotron, .jumbotron-center, .jumbotron-center-compact, .jumbotron-center-medium {
+    margin: 0 auto;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.5);
+    padding: 20px;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.jumbotron-center {
+    margin-top: 20%;
+}
+
+.jumbotron-center-compact {
+    margin-top: 150px;
+    width: auto;
+    max-width: 1000px;
+}
+
+.jumbotron-center-medium {
+    margin-top: 150px;
+    width: auto;
+    max-width: 75%;
+}
+
+.jumbotron h1, .jumbotron-center h1, .jumbotron-center-compact h1, .jumbotron-center-medium h1 {
+    text-align: center;
+}
+
+.bg-image {
+    position: fixed;
+    left: 0;
+    right: 0;
+    z-index: 0;
+    display: block;
+    background: url('/images/century-link.jpg');
+    background-repeat: no-repeat;
+    height: 100%;
+    background-position: center;
+    background-size: cover;
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px);
+}
+
+.container {
+    z-index: 501;
+    position: fixed;
+  left: 0;
+  right: 0;
+  top: 0;
+  overflow-x: hidden;
+}
+
+.container.full-page {
+    height: 100%;
+}
+
+.tbl-board {
+    width: 95%;
+    margin: 0 auto;
+    padding: 5px;
+    font-size: 24px;
+    table-layout: fixed;
+}
+
+.tbl-board th {
+    border-bottom: 3px solid black;
+    font-size: 16px;
+}
+
+.td-team-name {
+    text-align: center;
+    padding: 15px;
+    max-width: 200px;
+
+}
+
+.td-pick-name {
+    padding: 5px;
+    text-align: center;
+    font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 50px;
+}
+
+.pick-select, .login-controls {
+    text-align: center;
+}
+
+.login-controls {
+    width: 25%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    flex-direction: column;
+}
+
+.login-control input, .login-control button {
+    padding: 10px;
+    font-family: 'Open Sans', sans-serif !important;
+    width: 100%;
+}
+
+.login-control {
+    display: flex;
+    margin: 5px;
+    justify-content: left;
+    width: 100%;
+}
+
+.login-control button {
+    height: 60px;
+}
+
+.pickem, .pickem-alt {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    height: 7rem;
+}
+
+.pickem {
+    background: rgba(206, 206, 206, 0.65);
+}
+
+.pickem-alt {
+    background: rgba(162, 162, 162, 0.65);
+}
+
+.pickem.is-locked, .pickem-alt.is-locked {
+    cursor: not-allowed;
+}
+
+.pickem-week, .pickem-team, .pickem-time, .pickem-week, .pickem-complete {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+.pickem-week a, .pickem-week.admin {
+    width: 100%;
+    padding: 10px 0 10px 0;
+    font-size: 24px;
+    font-weight: bold;
+    text-align: center;
+    background-color: #001433;
+    color: #FFFFFF;
+}
+
+.pickem-homeaway {
+    width: 100%;
+    background-color: #A5ACAF;
+    padding: 5px 0 5px 0;
+    display: flex;
+}
+
+.pickem-timelabel {
+    display: inline-block;
+    padding: 5px 0 5px 0;
+    font-weight: bold;
+    font-size: 22px;
+    width: 20%;
+    text-align: center;
+}
+
+.pickem-home, .pickem-away {
+    display: inline-block;
+    width: 40%;
+    padding: 5px 0 5px 0;
+    font-weight: bold;
+    font-size: 22px;
+    text-align: center;
+}
+
+.pickem-time, .pickem-complete {
+    width: 20%;
+    font-size: 16px;
+}
+
+.pickem-complete.is-correct, .pickem-complete.is-incorrect {
+    font-weight: bold;
+}
+
+.pickem-complete.is-correct {
+    color: #69BE28;
+}
+
+.pickem-complete.is-incorrect {
+    color: #FF0000;
+}
+
+.pickem-team {
+    width: 40%;
+    cursor: pointer;
+}
+
+.pickem-team.is-selected, .pickem-team.admin.is-winner {
+    font-weight: bold;
+    color: #FFFFFF;
+    background: #69BE28;
+}
+
+.pickem-team:hover {
+    background: rgb(255, 255, 255);
+}
+
+.pickem-team.is-selected:hover {
+    background: #A4F763;
+}
+
+.pickem-team.is-selected.is-loser, .pickem-team.admin.is-loser {
+    background: #FF0000;
+}
+
+.pickem-team.is-locked.is-winner:hover {
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0);
+}
+
+.pickem-team.is-locked.is-selected.is-winner:hover {
+    cursor: not-allowed;
+    background: #69BE28;
+}
+
+.pickem-team.is-locked.is-selected.is-loser:hover {
+    cursor: not-allowed;
+    background: #FF0000;
+}
+
+.pickem-team.is-locked:hover {
+    cursor: not-allowed;
+    background: rgba(255, 255, 255, 0);
+}
+
+.pick-icon {
+    font-size: 3rem !important;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* Absolute Center Spinner */
+.loading {
+    position: fixed;
+    z-index: 999;
+    height: 2em;
+    width: 2em;
+    overflow: show;
+    margin: auto;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+  }
+  
+/* Transparent Overlay */
+.loading:before {
+content: '';
+display: block;
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0,0,0,0.3);
+}
+
+/* :not(:required) hides these rules from IE9 and below */
+.loading:not(:required) {
+/* hide "loading..." text */
+font: 0/0 a;
+color: transparent;
+text-shadow: none;
+background-color: transparent;
+border: 0;
+}
+
+.loading:not(:required):after {
+content: '';
+display: block;
+font-size: 10px;
+width: 1em;
+height: 1em;
+margin-top: -0.5em;
+-webkit-animation: spinner 1500ms infinite linear;
+-moz-animation: spinner 1500ms infinite linear;
+-ms-animation: spinner 1500ms infinite linear;
+-o-animation: spinner 1500ms infinite linear;
+animation: spinner 1500ms infinite linear;
+border-radius: 0.5em;
+-webkit-box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.5) -1.5em 0 0 0, rgba(0, 0, 0, 0.5) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) 0 1.5em 0 0, rgba(0, 0, 0, 0.75) -1.1em 1.1em 0 0, rgba(0, 0, 0, 0.75) -1.5em 0 0 0, rgba(0, 0, 0, 0.75) -1.1em -1.1em 0 0, rgba(0, 0, 0, 0.75) 0 -1.5em 0 0, rgba(0, 0, 0, 0.75) 1.1em -1.1em 0 0;
+}
+
+/* Animation */
+
+@-webkit-keyframes spinner {
+0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+}
+@-moz-keyframes spinner {
+0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+}
+@-o-keyframes spinner {
+0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+}
+@keyframes spinner {
+0% {
+    -webkit-transform: rotate(0deg);
+    -moz-transform: rotate(0deg);
+    -ms-transform: rotate(0deg);
+    -o-transform: rotate(0deg);
+    transform: rotate(0deg);
+}
+100% {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+}
+}
+
+  /* header */
+.header {
+    height: 100px;
+    background-color: #001433;
+    font-family: 'Open Sans', sans-serif;
+    display: flex;
+    font-size: 22px;
+    font-weight: bold;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    color: white;
+}
+
+.header-link {
+    border-right: 1px solid #FFFFFF;
+    display: flex;
+    align-self: center;
+    padding: 0 10px 0 10px;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    width: 8rem;
+    height: 100%;
+}
+
+.header-link:last-child {
+    border: 0;
+}
+
+.header-link.right {
+    float: right;
+    margin-left: auto;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    width: 20rem;
+    padding-right: 0;
+}
+
+.header-username, .header-controls-login, .header-controls-logout  {
+    display: flex;
+    width: 50%;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+}
+
+.header-link:hover {
+    cursor: pointer;
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.header-link.right:hover {
+    cursor: auto;
+    background-color: rgba(255, 255, 255, 0);
+}
+
+.header-controls-login {
+    width: 100%;
+}
+
+.header-controls-logout {
+    width: 50%;
+}
+
+.header-controls-login a, .header-controls-logout a {
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+}
+
+.header-controls-login:hover, .header-controls-logout:hover {
+    background-color: rgba(255, 255, 255, 0.75);
+}
+
+.header-link a, .header-controls-login a, .header-controls-logout a {
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    flex-direction: column;
+    text-align: center;
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+.pickem-counts {
+    font-size: 22px;
+    line-height: 28px;
+    color: #FFFFFF;
+    background-color: #001433;
+    padding: .5rem;
+}
+
+.pickem-counts-correct, .pickem-counts.incorrect {
+    font-weight: bold;
+}
+
+.pickem-counts-correct {
+    color: #69BE28;
+}
+
+.pickem-counts-incorrect {
+    color: #FF0000;
+}
+
+.leaderboard-table {
+    width: 100%;
+    font-size: 24px;
+    text-align: center;
+    line-height: 48px;
+}
+
+.pickem-weekly-table {
+    margin: 0 auto;
+    border-spacing: 0;
+    width: 100%;
+}
+
+.pickem-weekly-table th, .pickem-weekly-table td {
+    text-align: center;
+}
+
+.pickem-weekly-table td i {
+    margin: 0 auto;
+}
+
+.pickem-weekly-table tr.pick-row:nth-child(even) {
+    background: rgba(162, 162, 162, 0.65);
+}
+
+.pickem-weekly-table tr.pick-row:nth-child(odd) {
+    background: rgba(255, 255, 255, 0.5);
+}
+
+.name-header, .team-header {
+    border-right: 1px solid #000000;
+    font-size: 1rem;
+    padding: .25rem .75rem .25rem .75rem;
+}
+
+.name-header.sticky {
+    position: sticky;
+    left: 0;
+}
+
+.name-header.sticky, .game-header {
+    background-color: #ECECEC;
+}
+
+.week-control {
+    font-size: 1rem;
+    color: #FFFFFF;
+    margin: 1rem;
+}
+ .week-control.right {
+     float: right;
+     overflow: auto;
+ }
+ 
+ .controls-container {
+    text-align: center;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+ }
+
+ .controls-container a {
+     color: #001433;
+     font-weight: bold;
+     font-size: 1.2rem;
+     padding: .5rem;
+     text-decoration: underline;
+     cursor: pointer;
+ }
+
+ .table-container {
+     overflow-y: auto;
+ }
+
+ .top-link-container {
+     display: flex;
+     justify-content: flex-end;
+     margin-top: 15px;
+     color: #001433;
+     text-decoration: underline;
+     font-weight: bold;
+     font-size: 1.2rem;
+     padding: .5rem;
+     cursor: pointer;
+ }
