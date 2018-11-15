@@ -5,35 +5,50 @@ import Header from './shared/header';
 class Pickems extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
-            week: 1,
-            loading: false,
-            pickems: [{
-                winner: 1,
-                istie: 0,
-                idpickteam: 1,
-                canupdate: 0,
-                gametime: new Date()
-            },{
-                winner: 2,
-                istie: 0,
-                idpickteam: 1,
-                canupdate: 0,
-                gametime: new Date()
-            },{
-                winner: 1,
-                istie: 1,
-                idpickteam: 2,
-                canupdate: 0,
-                gametime: new Date()
-            },{
-                winner: 0,
-                istie: 0,
-                idpickteam: 1,
-                canupdate: 1,
-                gametime: new Date()
-            },]
+            loading: true
+        };
+        
+    }
+
+    componentDidMount() {
+        var hashValue = window.location.hash ? window.location.hash.substr(1) : '';
+
+        if (hashValue) {
+            // go get the data for the week # in the hash
+            return;
         }
+
+        // this.setState(this.state = {
+        //     week: 1,
+        //     loading: false,
+        //     pickems: [{
+        //         winner: 1,
+        //         istie: 0,
+        //         idpickteam: 1,
+        //         canupdate: 0,
+        //         gametime: new Date()
+        //     },{
+        //         winner: 2,
+        //         istie: 0,
+        //         idpickteam: 1,
+        //         canupdate: 0,
+        //         gametime: new Date()
+        //     },{
+        //         winner: 1,
+        //         istie: 1,
+        //         idpickteam: 2,
+        //         canupdate: 0,
+        //         gametime: new Date()
+        //     },{
+        //         winner: 0,
+        //         istie: 0,
+        //         idpickteam: 1,
+        //         canupdate: 1,
+        //         gametime: new Date()
+        //     },]
+        // });
     }
 
     formatDate(date) {
@@ -54,12 +69,19 @@ class Pickems extends Component {
         });
     }
 
+    buildPickemRows() {
+        if (this.state.loading) {
+            return <div className="loading">Loading&#8230;</div>;
+        }
+
+        return this.state.pickems.map((pickem, idx) => this.buildPickemRow(pickem, idx));
+    }
+
     buildPickemRow(pickem, idx) {
 
         const rowClassName = idx % 2 === 1 ? 'pickem' : 'pickem-alt';
         const pickemComplete = pickem.winner || pickem.istie;
         const pickWasCorrect = pickem.istie || (pickem.winner && pickem.winner === pickem.idpickteam);
-
 
         return (
             <div className={`${rowClassName} ${!pickem.canupdate ? 'is-locked' : ''}`}>
@@ -67,7 +89,7 @@ class Pickems extends Component {
                     {pickemComplete &&
                         <i className='material-icons pick-icon'>{pickWasCorrect ? 'check' : 'close'}</i>}
                     {!pickemComplete &&
-                        <div class='pickem-time'>{this.formatDate(pickem.gametime)}</div>}
+                        <div className='pickem-time'>{this.formatDate(pickem.gametime)}</div>}
                 </div>
             </div>
         );
@@ -105,7 +127,7 @@ class Pickems extends Component {
                                 </div>
                             </div>
                             <div className='pickem-week'>
-                                <Link to={`/pickems/week/${this.state.week}/`}>WEEK {this.state.week}</Link>
+                                <a href={`/pickems/week/${this.state.week}/`}>WEEK {this.state.week}</a>
                             </div>
                             <div className='pickem-homeaway'>
                                 <div className='pickem-timelabel'>
@@ -118,7 +140,7 @@ class Pickems extends Component {
                                     Home
                                 </div>
                             </div>
-                            {!this.state.loading && this.state.pickems.map((pickem, idx) => this.buildPickemRow(pickem, idx))}
+                            {this.buildPickemRows()}
                         </div>
                     </div>
                 </div>

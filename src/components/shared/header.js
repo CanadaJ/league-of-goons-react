@@ -11,7 +11,7 @@ class Header extends Component {
 
         const AdminArea = () => (
             <div className='header-link'>
-                <Link to='/admin'>Admin</Link>
+                <a href='/admin'>Admin</a>
             </div>
         );
         
@@ -21,7 +21,7 @@ class Header extends Component {
                     Hello, {user.name}
                 </div>
                 <div className='header-controls-logout'>
-                    <Link to='/logout/'>Logout</Link>
+                    <a href='/logout/'>Logout</a>
                 </div>
             </div>
         );
@@ -29,16 +29,16 @@ class Header extends Component {
         return (
             <div className='header'>
                 <div className='header-link'>
-                    <Link to='/'>Home</Link>
+                    <a href='/'>Home</a>
                 </div>
                 <div className='header-link'>
-                    <Link to='/pickems/'>Pick'ems</Link>
+                    <a href='/pickems/'>Pick'ems</a>
                 </div>
                 <div className='header-link'>
-                    <Link to='/pickems/week/'>Weekly Pick'ems</Link>
+                    <a href='/pickems/week/'>Weekly Pick'ems</a>
                 </div>
                 <div className='header-link'>
-                    <Link to='/leaderboard/'>Leaderboard</Link>
+                    <a href='/leaderboard/'>Leaderboard</a>
                 </div>
                 {isAdmin && AdminArea()}
                 {LoginArea(user)}
