@@ -30,6 +30,7 @@ class Pickems extends Component {
                 console.log(data);
 
                 this.setState({
+                    pickCounts: data.pickCounts,
                     pickems: data.userPicks,
                     week: week,
                     loading: false
@@ -60,10 +61,6 @@ class Pickems extends Component {
     }
 
     buildPickemRows() {
-        if (this.state.loading) {
-            return <div className="loading">Loading&#8230;</div>;
-        }
-
         if (this.state.pickems) {
             return this.state.pickems.map((pickem, idx) => this.buildPickemRow(pickem, idx));
         }
@@ -86,10 +83,10 @@ class Pickems extends Component {
                     {!pickemComplete &&
                         <div className='pickem-time'>{this.formatDate(pickem.gametime)}</div>}
                 </div>
-                <div className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idawayteam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam == pickem.idawayteam ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
+                <div className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idawayteam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
                         {pickem.away}
                 </div>
-                <div className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idhometeam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam == pickem.idhometeam ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
+                <div className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idhometeam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
                         {pickem.home}
                 </div>
             </div>
@@ -97,16 +94,17 @@ class Pickems extends Component {
     }
 
     render() {
-        const pickCounts = {
-            correct: 100,
-            incorrect: 50
-        };
+        const pickCounts = this.state.pickCounts;
 
         const weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
 
         const WeekLink = (week) => (
             <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Week {week}</a>
         );
+
+        if (this.state.loading) {
+            return <div className="loading">Loading&#8230;</div>;
+        }
 
         return(
             <div>
