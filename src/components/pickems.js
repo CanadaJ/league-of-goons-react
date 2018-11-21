@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
 import Header from './shared/header';
 
 class Pickems extends Component {
@@ -7,12 +6,17 @@ class Pickems extends Component {
         super(props);
 
         this.state = {
-            loading: true
+            loading: true,
+            week: 1
         };
         
     }
 
     componentDidMount() {
+        this.updatePickems(this.state.week);
+    }
+
+    updatePickems(week) {
         var hashValue = window.location.hash ? window.location.hash.substr(1) : '';
 
         if (hashValue) {
@@ -20,39 +24,21 @@ class Pickems extends Component {
             return;
         }
 
-        // this.setState(this.state = {
-        //     week: 1,
-        //     loading: false,
-        //     pickems: [{
-        //         winner: 1,
-        //         istie: 0,
-        //         idpickteam: 1,
-        //         canupdate: 0,
-        //         gametime: new Date()
-        //     },{
-        //         winner: 2,
-        //         istie: 0,
-        //         idpickteam: 1,
-        //         canupdate: 0,
-        //         gametime: new Date()
-        //     },{
-        //         winner: 1,
-        //         istie: 1,
-        //         idpickteam: 2,
-        //         canupdate: 0,
-        //         gametime: new Date()
-        //     },{
-        //         winner: 0,
-        //         istie: 0,
-        //         idpickteam: 1,
-        //         canupdate: 1,
-        //         gametime: new Date()
-        //     },]
-        // });
+        fetch(`/api/pickems/week/${week}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+
+                this.setState({
+                    pickems: data.userPicks,
+                    week: week,
+                    loading: false
+                });
+            });
     }
 
     formatDate(date) {
-        console.log(date);
+        date = new Date(date);
         var hours = date.getHours();
         var minutes = date.getMinutes();
         var meridian = hours >= 12 ? 'PM' : 'AM';
@@ -64,9 +50,13 @@ class Pickems extends Component {
     }
 
     changeWeek(week) {
+        console.log(week);
+
         this.setState({
-            week: week
+            loading: true
         });
+
+        this.updatePickems(week);
     }
 
     buildPickemRows() {
@@ -74,7 +64,9 @@ class Pickems extends Component {
             return <div className="loading">Loading&#8230;</div>;
         }
 
-        return this.state.pickems.map((pickem, idx) => this.buildPickemRow(pickem, idx));
+        if (this.state.pickems) {
+            return this.state.pickems.map((pickem, idx) => this.buildPickemRow(pickem, idx));
+        }
     }
 
     buildPickemRow(pickem, idx) {
@@ -83,13 +75,22 @@ class Pickems extends Component {
         const pickemComplete = pickem.winner || pickem.istie;
         const pickWasCorrect = pickem.istie || (pickem.winner && pickem.winner === pickem.idpickteam);
 
+        const homeWinner = pickem.winner && pickem.winner === pickem.idhometeam;
+        const awayWinner = pickem.winner && pickem.winner === pickem.idawayteam;
+
         return (
-            <div className={`${rowClassName} ${!pickem.canupdate ? 'is-locked' : ''}`}>
+            <div key={`matchup-${pickem.idmatchup}`} className={`${rowClassName} ${!pickem.canupdate ? 'is-locked' : ''}`}>
                 <div className={`${pickemComplete ? 'pickem-complete' : 'pickem-time'} ${pickemComplete && pickWasCorrect ? 'is-correct' : ''} ${pickemComplete && !pickWasCorrect ? 'is-incorrect' : ''}`}>
                     {pickemComplete &&
                         <i className='material-icons pick-icon'>{pickWasCorrect ? 'check' : 'close'}</i>}
                     {!pickemComplete &&
                         <div className='pickem-time'>{this.formatDate(pickem.gametime)}</div>}
+                </div>
+                <div className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idawayteam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam == pickem.idawayteam ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
+                        {pickem.away}
+                </div>
+                <div className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idhometeam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam == pickem.idhometeam ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
+                        {pickem.home}
                 </div>
             </div>
         );
