@@ -20,8 +20,17 @@ class Pickems extends Component {
         var hashValue = window.location.hash ? window.location.hash.substr(1) : '';
 
         if (hashValue) {
-            // go get the data for the week # in the hash
-            return;
+            const rgx = new RegExp(/^week([0-9]+)/);
+
+            if (rgx.test(hashValue)) {
+                const weekHash = rgx.exec(hashValue)[1];
+
+                if (weekHash && parseInt(weekHash) <= 16) {
+                     week = weekHash;
+                } else {
+                    window.location.hash = `week${week}`;
+                }
+            }
         }
 
         fetch(`/api/pickems/week/${week}`)
@@ -51,13 +60,18 @@ class Pickems extends Component {
     }
 
     changeWeek(week) {
-        console.log(week);
-
+        window.location.hash = `week${week}`;
         this.setState({
             loading: true
         });
 
         this.updatePickems(week);
+    }
+
+    doUpdatePickem(e, pickem, idTeam) {
+        console.log(pickem);
+        var team = pickem.idawayteam == idTeam ? pickem.away : pickem.home;
+        alert(`you picked ${team}`);
     }
 
     buildPickemRows() {
@@ -83,10 +97,10 @@ class Pickems extends Component {
                     {!pickemComplete &&
                         <div className='pickem-time'>{this.formatDate(pickem.gametime)}</div>}
                 </div>
-                <div className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idawayteam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
+                <div onClick={(e) => this.doUpdatePickem(e, pickem, pickem.idawayteam)} className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idawayteam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
                         {pickem.away}
                 </div>
-                <div className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idhometeam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
+                <div onClick={(e) => this.doUpdatePickem(e, pickem, pickem.idhometeam)} className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idhometeam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
                         {pickem.home}
                 </div>
             </div>
@@ -103,7 +117,8 @@ class Pickems extends Component {
         );
 
         if (this.state.loading) {
-            return <div className="loading">Loading&#8230;</div>;
+
+            return <div className='loading'>Loading&#8230;</div>;
         }
 
         return(
