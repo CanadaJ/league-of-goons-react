@@ -9,7 +9,6 @@ class Pickems extends Component {
             loading: true,
             week: 1
         };
-        
     }
 
     componentDidMount() {
@@ -49,9 +48,9 @@ class Pickems extends Component {
 
     formatDate(date) {
         date = new Date(date);
-        var hours = date.getHours();
-        var minutes = date.getMinutes();
-        var meridian = hours >= 12 ? 'PM' : 'AM';
+        let hours = date.getHours();
+        let minutes = date.getMinutes();
+        const meridian = hours >= 12 ? 'PM' : 'AM';
 
         if (hours > 12) hours = hours - 12;
         if (minutes.toString().length === 1) minutes = '0' + minutes.toString();
@@ -68,10 +67,33 @@ class Pickems extends Component {
         this.updatePickems(week);
     }
 
-    doUpdatePickem(e, pickem, idTeam) {
-        console.log(pickem);
-        var team = pickem.idawayteam == idTeam ? pickem.away : pickem.home;
-        alert(`you picked ${team}`);
+    doUpdatePickem = (e, pickem, idTeam) => {
+        e.persist();
+        let target = e.target;
+
+        if (target.classList.contains('is-selected')) {
+            return false;
+        }
+
+        fetch('/api/pickems/update/', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                idMatchup: pickem.idmatchup,
+                idUser: 1,
+                idTeam: idTeam
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log(data.success);
+            if (data.success) {
+                this.updatePickems(this.state.week);
+            }
+        });
     }
 
     buildPickemRows() {
@@ -85,9 +107,6 @@ class Pickems extends Component {
         const rowClassName = idx % 2 === 1 ? 'pickem' : 'pickem-alt';
         const pickemComplete = pickem.winner || pickem.istie;
         const pickWasCorrect = pickem.istie || (pickem.winner && pickem.winner === pickem.idpickteam);
-
-        const homeWinner = pickem.winner && pickem.winner === pickem.idhometeam;
-        const awayWinner = pickem.winner && pickem.winner === pickem.idawayteam;
 
         return (
             <div key={`matchup-${pickem.idmatchup}`} className={`${rowClassName} ${!pickem.canupdate ? 'is-locked' : ''}`}>
