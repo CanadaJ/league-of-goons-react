@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import Header from './shared/header';
 
 class Pickems extends Component {
     constructor(props) {
@@ -71,7 +70,7 @@ class Pickems extends Component {
         e.persist();
         let target = e.target;
 
-        if (target.classList.contains('is-selected')) {
+        if (!pickem.canupdate || pickem.idpickteam === idTeam) {
             return false;
         }
 
@@ -83,7 +82,7 @@ class Pickems extends Component {
             },
             body: JSON.stringify({
                 idMatchup: pickem.idmatchup,
-                idUser: 1,
+                idUser: this.props.idUser,
                 idTeam: idTeam
             })
         })
@@ -141,41 +140,35 @@ class Pickems extends Component {
         }
 
         return(
-            <div>
-                <div className='bg-image'></div>
-                <div className='container full-page'>
-                    <Header />
-                    <div className='jumbotron-center-compact'>
-                        <h1>League of Goons Pick'ems</h1>
-                        <div className='controls-container'>
-                            {weeks.map((week) => WeekLink(week))}
+            <div className='jumbotron-center-compact'>
+                <h1>League of Goons Pick'ems</h1>
+                <div className='controls-container'>
+                    {weeks.map((week) => WeekLink(week))}
+                </div>
+                <div className='pickems-area'>
+                    <div className='pickem-counts'>
+                        <div>
+                            Correct: <span className='pickem-counts-correct'>{pickCounts.correct}</span>
                         </div>
-                        <div className='pickems-area'>
-                            <div className='pickem-counts'>
-                                <div>
-                                    Correct: <span className='pickem-counts-correct'>{pickCounts.correct}</span>
-                                </div>
-                                <div>
-                                    Incorrect: <span className='pickem-counts-incorrect'>{pickCounts.incorrect}</span>
-                                </div>
-                            </div>
-                            <div className='pickem-week'>
-                                <a href={`/pickems/week/${this.state.week}/`}>WEEK {this.state.week}</a>
-                            </div>
-                            <div className='pickem-homeaway'>
-                                <div className='pickem-timelabel'>
-                                    Time
-                                </div>
-                                <div className='pickem-away'>
-                                    Away
-                                </div>
-                                <div className='pickem-home'>
-                                    Home
-                                </div>
-                            </div>
-                            {this.buildPickemRows()}
+                        <div>
+                            Incorrect: <span className='pickem-counts-incorrect'>{pickCounts.incorrect}</span>
                         </div>
                     </div>
+                    <div className='pickem-week'>
+                        <a href={`/pickems/week/${this.state.week}/`}>WEEK {this.state.week}</a>
+                    </div>
+                    <div className='pickem-homeaway'>
+                        <div className='pickem-timelabel'>
+                            Time
+                        </div>
+                        <div className='pickem-away'>
+                            Away
+                        </div>
+                        <div className='pickem-home'>
+                            Home
+                        </div>
+                    </div>
+                    {this.buildPickemRows()}
                 </div>
             </div>
         );

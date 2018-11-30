@@ -50,8 +50,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 app.get('/', isLoggedIn, function (req, res) {
-    console.log('wtf');
-
     return res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
