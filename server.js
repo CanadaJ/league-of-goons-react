@@ -1,35 +1,33 @@
 require('dotenv').config();
 const express = require('express');
-const form = require('express-form');
 const bodyparser = require('body-parser');
 const cookies = require('cookie-parser');
 const logger = require('morgan');
-const passport = require('passport');
-const LocalStrategy = require('passport-local').Strategy;
 const path = require('path');
 const mysql = require('mysql');
+const withAuth = require('./src/components/middleware');
+const Sequelize = require('sequelize');
+const jwt = require('jsonwebtoken');
+
+const sequelize = new Sequelize(process.env.REACT_APP_DB_CONN_STRING, {
+    dialect: 'mysql',
+    define: {
+        timestamps: false
+    }
+});
+
+sequelize
+    .authenticate()
+    .then(() => {
+        console.log('Connected to db');
+    })
+    .catch(err => {
+        console.log('Error connecting to db:', err);
+    });
+
+const User = sequelize.import(__dirname + '/models/user');
 
 const connection = mysql.createConnection(process.env.REACT_APP_DB_CONN_STRING);
-
-passport.use(new LocalStrategy(
-    (username, password, done) => {
-        connection.query(`call user_login(?, ?)`, [username, password], (err, rows) => {
-            if (err) return done(err);
-
-            return done(null, rows[0][0]);
-        });
-    }
-))
-
-passport.serializeUser((user, cb) => {
-    cb(null, user);
-});
-
-passport.deserializeUser((user, cb) => {
-    connection.query(`select u.iduser, u.name, CASE WHEN u.iduser = 1 THEN 1 ELSE 0 END AS isadmin from users u where u.iduser = ?`, [user.iduser], (err, rows) => {
-        cb(err, rows[0]);
-    });
-});
 
 connection.connect((err) => {
     if (err) {
@@ -41,19 +39,19 @@ connection.connect((err) => {
 });
 
 const app = express();
-// app.use(express.static(path.join(__dirname, 'build')));
+const _secret = process.env.REACT_APP_SECRET;
+
+app.use(express.static(path.join(__dirname, 'build')));
 app.use(logger('dev'));
 app.use(cookies());
-app.use(bodyparser());
-app.use(require('express-session')({ secret: 'fuck goodell' }));
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(bodyparser.urlencoded({ extended: false }));
+app.use(bodyparser.json());
 
-app.get('/', isLoggedIn, function (req, res) {
+app.get('/', (req, res) => {
     return res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
-app.post('/api/pickems/update', isLoggedIn, function(req, res) {
+app.post('/api/pickems/update', withAuth, function(req, res) {
     if (!req.body) {
         res.send({ success: false });
         return;
@@ -126,16 +124,47 @@ app.get('/login', (req, res) => {
     return res.sendFile(path.join(__dirname, 'build', 'login.html'));
 });
 
+app.post('/api/authenticate', (req, res) => {
+    const { username, password } = req.body;
+
+    User.findOne({
+        where: {
+            username: username,
+            password: password
+        }
+    })
+    .then(user => {
+        if (!user) {
+            res.status(401)
+                .json({
+                error: 'Incorrect email or password'
+            });
+
+            return;
+        }
+
+        // Issue token
+        const payload = {  
+            name: user.dataValues.name,
+            iduser: user.dataValues.iduser,
+            isadmin: user.dataValues.isadmin
+        };
+
+        const token = jwt.sign(payload, _secret, {
+          expiresIn: '1h'
+        });
+        res.cookie('token', token, { httpOnly: true }).sendStatus(200);
+    });
+});
+
+app.get('/api/checktoken', withAuth, (req, res) => {
+    res.status(200).json(res.user);
+});
+
+app.get('/api/logout', withAuth, (req, res) => {
+    res.clearCookie('token').sendStatus(200);
+});
+
 app.listen(process.env.PORT || 8080, () => {
     console.log('listening on port', process.env.PORT || 8080);
 });
-
-function isLoggedIn(req, res, next) {
-    console.log(req);
-    console.log(res);
-
-    if (req.isAuthenticated())
-        return next();
-
-    res.redirect('/login');
-}

@@ -23,7 +23,7 @@ class Pickems extends Component {
             if (rgx.test(hashValue)) {
                 const weekHash = rgx.exec(hashValue)[1];
 
-                if (weekHash && parseInt(weekHash) <= 16) {
+                if (weekHash && parseInt(weekHash) <= 17) {
                      week = weekHash;
                 } else {
                     window.location.hash = `week${week}`;
@@ -128,7 +128,7 @@ class Pickems extends Component {
     render() {
         const pickCounts = this.state.pickCounts;
 
-        const weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16];
+        const weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
 
         const WeekLink = (week) => (
             <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Week {week}</a>
