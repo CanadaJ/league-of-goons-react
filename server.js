@@ -26,7 +26,6 @@ sequelize
     });
 
 const User = sequelize.import(__dirname + '/models/user');
-
 const connection = mysql.createConnection(process.env.REACT_APP_DB_CONN_STRING);
 
 connection.connect((err) => {
@@ -46,10 +45,6 @@ app.use(logger('dev'));
 app.use(cookies());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
-
-app.get('/', (req, res) => {
-    return res.sendFile(path.join(__dirname, 'build', 'index.html'));
-});
 
 app.post('/api/pickems/update', withAuth, function(req, res) {
     if (!req.body) {
@@ -120,10 +115,6 @@ app.get('/api/pickems/week/:week*?', (req, res) => {
     });
 });
 
-app.get('/login', (req, res) => {
-    return res.sendFile(path.join(__dirname, 'build', 'login.html'));
-});
-
 app.post('/api/authenticate', (req, res) => {
     const { username, password } = req.body;
 
@@ -163,6 +154,10 @@ app.get('/api/checktoken', withAuth, (req, res) => {
 
 app.get('/api/logout', withAuth, (req, res) => {
     res.clearCookie('token').sendStatus(200);
+});
+
+app.get('/*', (req, res) => {
+    return res.sendFile(path.join(__dirname, 'build', 'index.html'));
 });
 
 app.listen(process.env.PORT || 8080, () => {
