@@ -37,8 +37,6 @@ class PickemsWeekly extends Component {
         fetch(`/api/pickems/weekly/${week}`)
             .then((res) => res.json())
             .then((data) => {
-                console.log(data);
-
                 this.setState({
                     userPicks: data.userPicks,
                     matchups: data.matchups,
@@ -64,10 +62,10 @@ class PickemsWeekly extends Component {
                     {
                         return <td key={key}>-</td>
                     } else if (pick && pick.wasCorrect) {
-                        return <td key={key}><i class='material-icons pick-icon pickem-complete is-correct'>check</i></td>;
+                        return <td key={key}><i className='material-icons pick-icon pickem-complete is-correct'>check</i></td>;
                     } else if (pick && !pick.wasCorrect)
                     {
-                        return <td key={key}><i class='material-icons pick-icon pickem-complete is-incorrect'>close</i></td>;
+                        return <td key={key}><i className='material-icons pick-icon pickem-complete is-incorrect'>close</i></td>;
                     }
 
                     return <td>-</td>
@@ -80,11 +78,6 @@ class PickemsWeekly extends Component {
         if (week == this.state.week) return false;
 
         window.location.hash = `week${week}`;
-        this.setState({
-            loading: true
-        });
-
-        this.updatePickems(week);
     }
 
     formatWeekName = (week) =>

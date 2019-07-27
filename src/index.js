@@ -7,16 +7,35 @@ import Pickems from './components/pickems';
 import PickemsWeekly from './components/pickemsWeekly';
 import withAuth from './components/shared/withAuth';
 import Home from './components/home';
+import Page from './components/shared/page';
 
 ReactDOM.render(
     <Router>
         <div>
             <Route path='/' component={Header} />
             <Switch>
-                <Route exact path='/' component={Home} />
+                <Route
+                    exact
+                    path='/'
+                    render={(props) => (
+                        <Page {...props} component={Home} title={'Home - League of Goons'} />
+                    )}
+                />
                 <Route path='/login' component={Login} />
-                <Route exact path='/pickems' component={withAuth(Pickems)} />
-                <Route exact path='/pickems/week' component={withAuth(PickemsWeekly)} />
+                <Route
+                    exact
+                    path='/pickems'
+                    render={(props) => (
+                        <Page {...props} component={withAuth(Pickems)} title={'Pick\'ems - League of Goons'} />
+                    )}
+                />
+                <Route
+                    exact
+                    path='/pickems/week'
+                    render={(props) => (
+                        <Page {...props} component={withAuth(PickemsWeekly)} title={'Weekly Pick\'ems - League of Goons'} />
+                    )}
+                />
             </Switch>
         </div>
     </Router>, document.getElementById('root'));

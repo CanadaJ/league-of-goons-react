@@ -34,8 +34,6 @@ class Pickems extends Component {
         fetch(`/api/pickems/week/${week}`)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
-
                 this.setState({
                     pickCounts: data.pickCounts,
                     pickems: data.userPicks,
@@ -61,11 +59,6 @@ class Pickems extends Component {
         if (week == this.state.week) return false;
 
         window.location.hash = `week${week}`;
-        this.setState({
-            loading: true
-        });
-
-        this.updatePickems(week);
     }
 
     doUpdatePickem = (e, pickem, idTeam) => {
@@ -90,7 +83,6 @@ class Pickems extends Component {
         })
         .then(response => response.json())
         .then(data => {
-            console.log(data.success);
             if (data.success) {
                 this.updatePickems(this.state.week);
             }
