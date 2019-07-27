@@ -115,6 +115,66 @@ app.get('/api/pickems/week/:week*?', (req, res) => {
     });
 });
 
+app.get('/api/pickems/weekly/:week*?', (req, res) => {
+    var weekNum = req.params['week'];
+
+    console.log('got weeknum', weekNum);
+
+    if (!weekNum || weekNum < 0) {
+        return res.send({
+            matchups: [],
+            users: [],
+            userPicks: []
+        });
+    }
+
+    var users = [];
+    var matchups = [];
+    var userPicks = [];
+
+    connection.query('CALL pickem_picksbyweek(?)', [weekNum], function(err, rows) {
+        if (err) throw err;
+
+        for (let i in rows[0]) {
+            users.push({
+                idUser: rows[0][i].iduser,
+                name: rows[0][i].name
+            });
+        }
+
+        for (let i in rows[1]) {
+            matchups.push({
+                idMatchup: rows[1][i].idmatchup,
+                homeName: rows[1][i].homename,
+                awayName: rows[1][i].awayname
+            });
+        }
+
+        for (let idx in rows[2]) {
+            let row = rows[2];
+
+            userPicks.push({
+                idUser: row[idx].iduser,
+                name: row[idx].name,
+                idMatchup: row[idx].idmatchup,
+                wasCorrect: row[idx].wascorrect,
+                isFuture: row[idx].isfuture,
+                idHomeTeam: row[idx].idhometeam,
+                idAwayTeam: row[idx].idawayteam,
+                homeMame: row[idx].homename,
+                awayMame: row[idx].awayname,
+                hasWinner: row[idx].haswinner
+            });
+        }
+
+        return res.send({
+            matchups: matchups,
+            users: users,
+            userPicks: userPicks
+        });
+    });
+});
+
 app.post('/api/authenticate', (req, res) => {
     const { username, password } = req.body;
 

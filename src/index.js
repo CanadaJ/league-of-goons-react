@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link, Redirect, Switch } from 'react-ro
 import Login from './components/login';
 import Header from './components/shared/header';
 import Pickems from './components/pickems';
+import PickemsWeekly from './components/pickemsWeekly';
 import withAuth from './components/shared/withAuth';
 import Home from './components/home';
 
@@ -14,7 +15,8 @@ ReactDOM.render(
             <Switch>
                 <Route exact path='/' component={Home} />
                 <Route path='/login' component={Login} />
-                <Route path='/pickems' component={withAuth(Pickems)} />
+                <Route exact path='/pickems' component={withAuth(Pickems)} />
+                <Route exact path='/pickems/week' component={withAuth(PickemsWeekly)} />
             </Switch>
         </div>
     </Router>, document.getElementById('root'));

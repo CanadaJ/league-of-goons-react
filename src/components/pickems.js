@@ -58,6 +58,8 @@ class Pickems extends Component {
     }
 
     changeWeek(week) {
+        if (week == this.state.week) return false;
+
         window.location.hash = `week${week}`;
         this.setState({
             loading: true
@@ -125,6 +127,16 @@ class Pickems extends Component {
         );
     }
 
+    formatWeekName = (week) =>
+    {
+        if (week <= 17) return `Week ${week}`;
+
+        if (week === 18) return 'Wild Card';
+        if (week === 19) return 'Divisional';
+        if (week === 20) return 'Conference';
+        if (week === 22) return 'Super Bowl';
+    }
+
     render() {
         const pickCounts = this.state.pickCounts;
 
@@ -146,7 +158,7 @@ class Pickems extends Component {
 
         return(
             <div className='jumbotron-center-compact'>
-                <h1>League of Goons Pick'ems</h1>
+                <h1>League of Goons Pick'ems ({this.formatWeekName(this.state.week)})</h1>
                 <div className='controls-container'>
                     {weeks.map((week) => WeekLink(week))}
                 </div>
