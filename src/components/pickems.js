@@ -172,7 +172,7 @@ class Pickems extends Component {
                         </div>
                     </div>
                     <div className='pickem-week'>
-                        <a href={`/pickems/week/${this.state.week}/`}>WEEK {this.state.week}</a>
+                        <a href={`/pickems/week/#week${this.state.week}/`}>WEEK {this.state.week}</a>
                     </div>
                     <div className='pickem-homeaway'>
                         <div className='pickem-timelabel'>
