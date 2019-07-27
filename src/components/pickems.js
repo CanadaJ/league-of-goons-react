@@ -128,11 +128,16 @@ class Pickems extends Component {
     render() {
         const pickCounts = this.state.pickCounts;
 
-        const weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17];
+        const weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22];
 
-        const WeekLink = (week) => (
-            <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Week {week}</a>
-        );
+        const WeekLink = (week) => {
+            if (week <= 17) return (<a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Week {week}</a>);
+
+            if (week === 18) return <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Wild Card</a>;
+            if (week === 19) return <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Divisional</a>;
+            if (week === 20) return <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Conference</a>;
+            if (week === 22) return <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Super Bowl</a>;
+        };
 
         if (this.state.loading) {
 
