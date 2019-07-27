@@ -8,6 +8,7 @@ import PickemsWeekly from './components/pickemsWeekly';
 import withAuth from './components/shared/withAuth';
 import Home from './components/home';
 import Page from './components/shared/page';
+import Leaderboard from './components/leaderboard';
 
 ReactDOM.render(
     <Router>
@@ -34,6 +35,13 @@ ReactDOM.render(
                     path='/pickems/week'
                     render={(props) => (
                         <Page {...props} component={withAuth(PickemsWeekly)} title={'Weekly Pick\'ems - League of Goons'} />
+                    )}
+                />
+                <Route
+                    exact
+                    path='/leaderboard'
+                    render={(props) => (
+                        <Page {...props} component={withAuth(Leaderboard)} title={'Leaderboard - League of Goons'} />
                     )}
                 />
             </Switch>

@@ -175,6 +175,44 @@ app.get('/api/pickems/weekly/:week*?', (req, res) => {
     });
 });
 
+app.get('/api/leaderboard', function(req, res) {
+
+    var leaderboard = [];
+    var lastNumCorrect = -1;
+    var rank = 1;
+    var rankDelta = 1;
+
+    connection.query('CALL pickem_pickranks', function(err, rows) {
+        if (err) throw err;
+        for (var idx in rows[0]) {
+            var row = rows[0][idx];
+
+
+            if (lastNumCorrect === row.numCorrect) {
+                rankDelta++;
+            }
+        
+            if (lastNumCorrect > row.numCorrect) {
+                rank += rankDelta;
+                rankDelta = 1;
+            }
+
+            lastNumCorrect = row.numCorrect;
+
+            leaderboard.push({
+                rank: rank,
+                name: row.name,
+                numCorrect: row.numCorrect,
+                numIncorrect: row.numIncorrect
+            });
+        }
+
+        return res.send({
+            leaderboard: leaderboard
+        });
+    });
+});
+
 app.post('/api/authenticate', (req, res) => {
     const { username, password } = req.body;
 
