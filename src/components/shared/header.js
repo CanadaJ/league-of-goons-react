@@ -49,7 +49,7 @@ class Header extends Component {
     render() {
         const AdminArea = () => (
             <div className='header-link'>
-                <a href='/admin'>Admin</a>
+                <a href='/admin/pickems'>Admin</a>
             </div>
         );
         

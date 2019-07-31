@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Pickems extends Component {
+class PickemsAdmin extends Component {
     constructor(props) {
         super(props);
 
@@ -183,4 +183,4 @@ class Pickems extends Component {
     }
 }
 
-export default Pickems;
+export default PickemsAdmin;

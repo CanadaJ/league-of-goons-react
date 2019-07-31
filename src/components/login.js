@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { Route, Link, Redirect } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 
 class Login extends Component {
     constructor(props) {
         super(props);
-    }
 
-    state = {
-        username: '',
-        password: ''
+        this.state = {
+            username: '',
+            password: ''
+        }
     }
 
     handleInputChange = (event) => {
@@ -30,6 +30,7 @@ class Login extends Component {
         .then(res => {
             if (res.status === 200) {
                 this.props.history.push('/');
+                window.location.replace('/');
             } else {
                 const error = new Error(res.error);
                 throw error;

@@ -42,7 +42,7 @@ class PickemsWeekly extends Component {
                     matchups: data.matchups,
                     users: data.users,
                     loading: false,
-                    week: week
+                    week: parseInt(week)
                 });
             });
     }
@@ -75,7 +75,7 @@ class PickemsWeekly extends Component {
     }
 
     changeWeek(week) {
-        if (week == this.state.week) return false;
+        if (week === this.state.week) return false;
 
         window.location.hash = `week${week}`;
     }

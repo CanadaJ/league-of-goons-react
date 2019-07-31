@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router, Route, Link, Redirect, Switch } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/login';
 import Header from './components/shared/header';
 import Pickems from './components/pickems';
@@ -9,6 +9,7 @@ import withAuth from './components/shared/withAuth';
 import Home from './components/home';
 import Page from './components/shared/page';
 import Leaderboard from './components/leaderboard';
+import PickemsAdmin from './components/pickemsAdmin';
 
 ReactDOM.render(
     <Router>
@@ -42,6 +43,13 @@ ReactDOM.render(
                     path='/leaderboard'
                     render={(props) => (
                         <Page {...props} component={withAuth(Leaderboard)} title={'Leaderboard - League of Goons'} />
+                    )}
+                />
+                <Route
+                    exact
+                    path='/admin/pickems'
+                    render={(props) => (
+                        <Page {...props} component={withAuth(PickemsAdmin)} title={'Pick\'ems Admin - League of Goons'} />
                     )}
                 />
             </Switch>
