@@ -64,7 +64,7 @@ class PickemsAdmin extends Component {
     doUpdatePickem = (e, pickem, idTeam) => {
         e.persist();
 
-        if (pickem.idpickteam === idTeam) {
+        if (pickem.winner === idTeam) {
             return false;
         }
 
@@ -104,13 +104,13 @@ class PickemsAdmin extends Component {
                 </div>
                 <div
                     onClick={(e) => this.doUpdatePickem(e, pickem, pickem.awayTeam)}
-                    className={`pickem-team admin ${pickem.awayTeam === pickem.winner || pickem.isTie ? 'is-winner' : ''} ${pickem.awayTeam !== pickem.winner ? 'is-loser' : ''}`}
+                    className={`pickem-team admin ${pickem.awayTeam === pickem.winner || pickem.isTie ? 'is-winner' : ''}`}
                 >
                         {pickem.awayName}
                 </div>
                 <div
                     onClick={(e) => this.doUpdatePickem(e, pickem, pickem.homeTeam)}
-                    className={`pickem-team admin ${pickem.homeTeam === pickem.winner || pickem.isTie ? 'is-winner' : ''} ${pickem.homeTeam !== pickem.winner ? 'is-loser' : ''}`}
+                    className={`pickem-team admin ${pickem.homeTeam === pickem.winner || pickem.isTie ? 'is-winner' : ''}`}
                 >
                         {pickem.homeName}
                 </div>

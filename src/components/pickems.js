@@ -108,10 +108,10 @@ class Pickems extends Component {
                     {!pickemComplete &&
                         <div className='pickem-time'>{this.formatDate(pickem.gametime)}</div>}
                 </div>
-                <div onClick={(e) => this.doUpdatePickem(e, pickem, pickem.idawayteam)} className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idawayteam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
+                <div onClick={(e) => this.doUpdatePickem(e, pickem, pickem.idawayteam)} className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idawayteam ? 'is-selected' : ''} ${pickemComplete && (pickem.idpickteam === pickem.winner || pickem.istie) ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
                         {pickem.away}
                 </div>
-                <div onClick={(e) => this.doUpdatePickem(e, pickem, pickem.idhometeam)} className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idhometeam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
+                <div onClick={(e) => this.doUpdatePickem(e, pickem, pickem.idhometeam)} className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idhometeam ? 'is-selected' : ''} ${pickemComplete && (pickem.idpickteam === pickem.winner || pickem.istie) ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
                         {pickem.home}
                 </div>
             </div>
