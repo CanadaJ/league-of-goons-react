@@ -10,6 +10,7 @@ import Home from './components/home';
 import Page from './components/shared/page';
 import Leaderboard from './components/leaderboard';
 import PickemsAdmin from './components/pickemsAdmin';
+import PickemsContainer from './components/shared/pickemsContainer';
 
 ReactDOM.render(
     <Router>
@@ -50,6 +51,13 @@ ReactDOM.render(
                     path='/admin/pickems'
                     render={(props) => (
                         <Page {...props} component={withAuth(PickemsAdmin)} title={'Pick\'ems Admin - League of Goons'} />
+                    )}
+                />
+                <Route
+                    exact
+                    path='/test'
+                    render={(props) => (
+                        <Page {...props} component={withAuth(PickemsContainer)} title={'Test Page - League of Goons'} />
                     )}
                 />
             </Switch>
