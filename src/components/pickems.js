@@ -23,7 +23,7 @@ class Pickems extends Component {
             if (rgx.test(hashValue)) {
                 const weekHash = rgx.exec(hashValue)[1];
 
-                if (weekHash && parseInt(weekHash) <= 17) {
+                if (weekHash && parseInt(weekHash) <= 22) {
                      week = weekHash;
                 } else {
                     window.location.hash = `week${week}`;

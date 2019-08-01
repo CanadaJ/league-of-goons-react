@@ -5,6 +5,7 @@ class PickemsAdmin extends Component {
         super(props);
 
         this.state = {
+            matchups: [],
             loading: true,
             week: 1
         };
@@ -23,7 +24,7 @@ class PickemsAdmin extends Component {
             if (rgx.test(hashValue)) {
                 const weekHash = rgx.exec(hashValue)[1];
 
-                if (weekHash && parseInt(weekHash) <= 17) {
+                if (weekHash && parseInt(weekHash) <= 22) {
                      week = weekHash;
                 } else {
                     window.location.hash = `week${week}`;
@@ -31,12 +32,11 @@ class PickemsAdmin extends Component {
             }
         }
 
-        fetch(`/api/pickems/week/${week}`)
+        fetch(`/api/admin/pickems/week/${week}`)
             .then(response => response.json())
             .then(data => {
                 this.setState({
-                    pickCounts: data.pickCounts,
-                    pickems: data.userPicks,
+                    matchups: data.matchups,
                     week: parseInt(week),
                     loading: false
                 });
@@ -64,24 +64,23 @@ class PickemsAdmin extends Component {
     doUpdatePickem = (e, pickem, idTeam) => {
         e.persist();
 
-        if (!pickem.canupdate || pickem.idpickteam === idTeam) {
+        if (pickem.idpickteam === idTeam) {
             return false;
         }
 
-        fetch('/api/pickems/update/', {
+        fetch('/api/admin/setmatchupwinner', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                idMatchup: pickem.idmatchup,
-                idUser: this.props.idUser,
-                idTeam: idTeam
+                idMatchup: pickem.idMatchup,
+                winner: idTeam
             })
         })
         .then(response => response.json())
-        .then(data => {
+        .then((data) => {
             if (data.success) {
                 this.updatePickems(this.state.week);
             }
@@ -89,30 +88,31 @@ class PickemsAdmin extends Component {
     }
 
     buildPickemRows() {
-        if (this.state.pickems) {
-            return this.state.pickems.map((pickem, idx) => this.buildPickemRow(pickem, idx));
+        if (this.state.matchups) {
+            return this.state.matchups.map((matchup, idx) => this.buildPickemRow(matchup, idx));
         }
     }
 
     buildPickemRow(pickem, idx) {
 
         const rowClassName = idx % 2 === 1 ? 'pickem' : 'pickem-alt';
-        const pickemComplete = pickem.winner || pickem.istie;
-        const pickWasCorrect = pickem.istie || (pickem.winner && pickem.winner === pickem.idpickteam);
 
         return (
-            <div key={`matchup-${pickem.idmatchup}`} className={`${rowClassName} ${!pickem.canupdate ? 'is-locked' : ''}`}>
-                <div className={`${pickemComplete ? 'pickem-complete' : 'pickem-time'} ${pickemComplete && pickWasCorrect ? 'is-correct' : ''} ${pickemComplete && !pickWasCorrect ? 'is-incorrect' : ''}`}>
-                    {pickemComplete &&
-                        <i className='material-icons pick-icon'>{pickWasCorrect ? 'check' : 'close'}</i>}
-                    {!pickemComplete &&
-                        <div className='pickem-time'>{this.formatDate(pickem.gametime)}</div>}
+            <div key={`matchup-${pickem.idMatchup}`} className={`${rowClassName}`}>
+                <div className='pickem-time'>
+                    <div className='pickem-time'>{this.formatDate(pickem.gameTime)}</div>
                 </div>
-                <div onClick={(e) => this.doUpdatePickem(e, pickem, pickem.idawayteam)} className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idawayteam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
-                        {pickem.away}
+                <div
+                    onClick={(e) => this.doUpdatePickem(e, pickem, pickem.awayTeam)}
+                    className={`pickem-team admin ${pickem.awayTeam === pickem.winner || pickem.isTie ? 'is-winner' : ''} ${pickem.awayTeam !== pickem.winner ? 'is-loser' : ''}`}
+                >
+                        {pickem.awayName}
                 </div>
-                <div onClick={(e) => this.doUpdatePickem(e, pickem, pickem.idhometeam)} className={`pickem-team ${!pickem.canupdate ? 'is-locked' : ''} ${pickem.idpickteam === pickem.idhometeam ? 'is-selected' : ''} ${pickemComplete && pickem.idpickteam === pickem.winner ? 'is-winner' :  pickemComplete ? 'is-loser' : ''}`}>
-                        {pickem.home}
+                <div
+                    onClick={(e) => this.doUpdatePickem(e, pickem, pickem.homeTeam)}
+                    className={`pickem-team admin ${pickem.homeTeam === pickem.winner || pickem.isTie ? 'is-winner' : ''} ${pickem.homeTeam !== pickem.winner ? 'is-loser' : ''}`}
+                >
+                        {pickem.homeName}
                 </div>
             </div>
         );
@@ -129,8 +129,6 @@ class PickemsAdmin extends Component {
     }
 
     render() {
-        const pickCounts = this.state.pickCounts;
-
         const weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22];
 
         const WeekLink = (week) => {
@@ -149,19 +147,11 @@ class PickemsAdmin extends Component {
 
         return(
             <div className='jumbotron-center-compact'>
-                <h1>League of Goons Pick'ems ({this.formatWeekName(this.state.week)})</h1>
+                <h1>Admin - League of Goons Pick'ems ({this.formatWeekName(this.state.week)})</h1>
                 <div className='controls-container'>
                     {weeks.map((week) => WeekLink(week))}
                 </div>
                 <div className='pickems-area'>
-                    <div className='pickem-counts'>
-                        <div>
-                            Correct: <span className='pickem-counts-correct'>{pickCounts.correct}</span>
-                        </div>
-                        <div>
-                            Incorrect: <span className='pickem-counts-incorrect'>{pickCounts.incorrect}</span>
-                        </div>
-                    </div>
                     <div className='pickem-week'>
                         <a href={`/pickems/week/#week${this.state.week}/`}>WEEK {this.state.week}</a>
                     </div>

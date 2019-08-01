@@ -74,6 +74,62 @@ app.post('/api/pickems/update', withAuth, function(req, res) {
     });
 });
 
+app.get('/api/admin/pickems/week/:week*?', (req, res) => {
+    let weekNum = req.params['week'];
+
+    if (!weekNum || weekNum <= 0) {
+        weekNum = null;
+    }
+
+    let matchups = [];
+
+    connection.query('call admin_getmatchupwinners_weekly(?)', [weekNum], (err, rows) => {
+        if (err) throw err;
+
+        for (var idx in rows[0]) {
+            matchups.push({
+                idMatchup: rows[0][idx].idmatchup,
+                homeTeam: rows[0][idx].home,
+                awayTeam: rows[0][idx].away,
+                winner: rows[0][idx].winner,
+                winnerName: rows[0][idx].name,
+                homeName: rows[0][idx].hometeam,
+                awayName: rows[0][idx].awayteam,
+                gameTime: rows[0][idx].gametime,
+                isTie: rows[0][idx].istie
+            });
+        }
+
+        return res.send({
+            matchups
+        });
+    });
+});
+
+app.post('/api/admin/setmatchupwinner', (req, res) => {
+    var pickRequest = req.body;
+
+    if (!pickRequest.winner || !pickRequest.idMatchup) {
+        return res.send({
+            success: false
+        });
+    }
+
+    connection.query('call admin_setwinner(?, ?)', [pickRequest.idMatchup, pickRequest.winner], (err, rows) => {
+        if (err) throw err;
+
+        if (!rows || rows.affectedRows === 0 || rows.affectedRows > 1) {
+            return res.send({
+                success: false
+            });
+        }
+
+        return res.send({
+            success: true
+        });
+    });
+});
+
 app.get('/api/pickems/week/:week*?', (req, res) => {
     let weekNum = req.params['week'];
 
@@ -117,8 +173,6 @@ app.get('/api/pickems/week/:week*?', (req, res) => {
 
 app.get('/api/pickems/weekly/:week*?', (req, res) => {
     var weekNum = req.params['week'];
-
-    console.log('got weeknum', weekNum);
 
     if (!weekNum || weekNum < 0) {
         return res.send({
