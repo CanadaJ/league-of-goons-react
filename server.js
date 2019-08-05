@@ -131,6 +131,7 @@ app.post('/api/admin/setmatchupwinner', (req, res) => {
 });
 
 app.get('/api/pickems/week/:week*?', (req, res) => {
+
     let weekNum = req.params['week'];
 
     if (!weekNum || weekNum <= 0) {
@@ -168,7 +169,7 @@ app.get('/api/pickems/week/:week*?', (req, res) => {
             userPicks,
             pickCounts
         });
-    });
+    });    
 });
 
 app.get('/api/pickems/weekly/:week*?', (req, res) => {

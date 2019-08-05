@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Login from './components/login';
 import Header from './components/shared/header';
-import Pickems from './components/pickems';
 import PickemsWeekly from './components/pickemsWeekly';
 import withAuth from './components/shared/withAuth';
 import Home from './components/home';
@@ -29,7 +28,7 @@ ReactDOM.render(
                     exact
                     path='/pickems'
                     render={(props) => (
-                        <Page {...props} component={withAuth(Pickems)} title={'Pick\'ems - League of Goons'} />
+                        <Page {...props} component={withAuth(PickemsContainer)} title={'Pick\'ems - League of Goons'} />
                     )}
                 />
                 <Route
@@ -51,13 +50,6 @@ ReactDOM.render(
                     path='/admin/pickems'
                     render={(props) => (
                         <Page {...props} component={withAuth(PickemsAdmin)} title={'Pick\'ems Admin - League of Goons'} />
-                    )}
-                />
-                <Route
-                    exact
-                    path='/test'
-                    render={(props) => (
-                        <Page {...props} component={withAuth(PickemsContainer)} title={'Test Page - League of Goons'} />
                     )}
                 />
             </Switch>
