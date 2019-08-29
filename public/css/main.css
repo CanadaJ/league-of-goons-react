@@ -387,13 +387,44 @@ box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0
     text-align: center;
     justify-content: center;
     flex-direction: column;
-    text-align: center;
-    width: 8rem;
+    min-width: 8rem;
     height: 100%;
+    align-items: center;
 }
 
 .header-link:last-child {
     border: 0;
+}
+
+.header-link.dropdown {
+    flex-direction: row;
+}
+
+.header-link.dropdown-content {
+    display: block;
+    background-color: #001433;
+    border-top: 1px solid #FFFFFF;
+    text-align: left;
+    justify-content: flex-start;
+    align-items: flex-start;
+    padding: 0;
+    min-width: 12rem;
+}
+
+.header-link.dropdown-content ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.header-link.dropdown-content:hover {
+    background-color: #001433;
+}
+
+.header-link.dropdown-content a {
+    padding: 1rem 0.5rem 1rem 0.5rem;
+    text-align: left;
+    display: block;
 }
 
 .header-link.right {
@@ -414,7 +445,7 @@ box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0
     text-align: center;
 }
 
-.header-link:hover {
+.header-link:hover, .header-link.dropdown-content a:hover {
     cursor: pointer;
     background-color: rgba(255, 255, 255, 0.75);
 }
@@ -422,6 +453,10 @@ box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0
 .header-link.right:hover {
     cursor: auto;
     background-color: rgba(255, 255, 255, 0);
+}
+
+.dropdown-item.admin {
+    border-top: 1px solid #FFFFFF;
 }
 
 .header-controls-login {
@@ -558,3 +593,47 @@ box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0
      padding: .5rem;
      cursor: pointer;
  }
+
+ /* Dropdown */
+.dropdown__content {
+    display: none;
+    position: absolute;
+}
+
+.dropdown--active .dropdown__content {
+    display: block;
+}
+
+ /* Chevron */
+ .chevron::before {
+	border-style: solid;
+	border-width: 0.2em 0.2em 0 0;
+	content: '';
+	display: inline-block;
+	height: 0.45em;
+	left: 0.5em;
+	position: relative;
+	top: 0.15em;
+	transform: rotate(-45deg);
+	vertical-align: top;
+	width: 0.45em;
+}
+
+.chevron.top:before {
+    top: 0.5rem;
+}
+
+.chevron.right:before {
+	left: 0;
+	transform: rotate(45deg);
+}
+
+.chevron.bottom:before {
+	top: 0.5rem;
+	transform: rotate(135deg);
+}
+
+.chevron.left:before {
+	left: 0.25em;
+	transform: rotate(-135deg);
+}

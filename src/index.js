@@ -15,7 +15,7 @@ import MatchupsAdmin from './components/admin/matchupsAdmin';
 ReactDOM.render(
     <Router>
         <div>
-            <Route path='/' component={withAuth(Header)} />
+            <Route path='/' component={Header} />
             <Switch>
                 <Route
                     exact
