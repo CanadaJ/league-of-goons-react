@@ -66,7 +66,7 @@ class PickemsContainer extends Component {
     render() {
         return (
             <div className='jumbotron-center-compact'>
-                <h1>Test</h1>
+                <h1>League of Goons Pick'ems</h1>
                 <WeekSelector changeWeek={this.changeWeek} />
                 <Pickems
                     pickCounts={this.state.pickCounts}

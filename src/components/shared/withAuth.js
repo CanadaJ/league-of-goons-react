@@ -25,15 +25,13 @@ export default function withAuth(ProtectedComponent) {
                 .then(json => {
                     if (!json) return;
 
-                    console.log(json);
-
                     this.setState({ user: json.user, loading: false });
                 });
         }
 
         render() {
             const { loading, redirect } = this.state;
-            let view = <h1>Loading...</h1>;
+            let view = <div className='loading'>Loading&#8230;</div>;
             
             if (!loading) {
                 if (redirect) {

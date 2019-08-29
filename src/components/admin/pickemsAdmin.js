@@ -1,46 +1,13 @@
 import React, { Component } from 'react';
 
 class PickemsAdmin extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            matchups: [],
-            loading: true,
-            week: 1
-        };
+    state = {
+        week: 1,
+        matchups: []
     }
 
     componentDidMount() {
-        this.updatePickems(this.state.week);
-    }
-
-    updatePickems(week) {
-        var hashValue = window.location.hash ? window.location.hash.substr(1) : '';
-
-        if (hashValue) {
-            const rgx = new RegExp(/^week([0-9]+)/);
-
-            if (rgx.test(hashValue)) {
-                const weekHash = rgx.exec(hashValue)[1];
-
-                if (weekHash && parseInt(weekHash) <= 22) {
-                     week = weekHash;
-                } else {
-                    window.location.hash = `week${week}`;
-                }
-            }
-        }
-
-        fetch(`/api/admin/pickems/week/${week}`)
-            .then(response => response.json())
-            .then(data => {
-                this.setState({
-                    matchups: data.matchups,
-                    week: parseInt(week),
-                    loading: false
-                });
-            });
+        this.setState({ loading: false });
     }
 
     formatDate(date) {
@@ -55,41 +22,15 @@ class PickemsAdmin extends Component {
         return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + ' ' + hours + ':' + minutes + ' ' + meridian;
     }
 
-    changeWeek(week) {
-        if (week === this.state.week) return false;
-
-        window.location.hash = `week${week}`;
-    }
-
-    doUpdatePickem = (e, pickem, idTeam) => {
+    doUpdateMatchup = (e, matchup, idTeam) => {
         e.persist();
 
-        if (pickem.winner === idTeam) {
-            return false;
-        }
-
-        fetch('/api/admin/setmatchupwinner', {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                idMatchup: pickem.idMatchup,
-                winner: idTeam
-            })
-        })
-        .then(response => response.json())
-        .then((data) => {
-            if (data.success) {
-                this.updatePickems(this.state.week);
-            }
-        });
+        this.props.updateMatchup(matchup, idTeam);
     }
 
     buildPickemRows() {
-        if (this.state.matchups) {
-            return this.state.matchups.map((matchup, idx) => this.buildPickemRow(matchup, idx));
+        if (this.props.matchups) {
+            return this.props.matchups.map((matchup, idx) => this.buildPickemRow(matchup, idx));
         }
     }
 
@@ -119,7 +60,7 @@ class PickemsAdmin extends Component {
     }
 
     render() {
-        if (this.state.loading) {
+        if (this.props.loading) {
 
             return <div className='loading'>Loading&#8230;</div>;
         }
@@ -127,7 +68,7 @@ class PickemsAdmin extends Component {
         return(
             <div className='pickems-area'>
                 <div className='pickem-week'>
-                    <a href={`/pickems/week/#week${this.state.week}/`}>WEEK {this.state.week}</a>
+                    <a href={`/pickems/week/#week${this.props.week}/`}>WEEK {this.props.week}</a>
                 </div>
                 <div className='pickem-homeaway'>
                     <div className='pickem-timelabel'>

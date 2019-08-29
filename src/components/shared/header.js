@@ -5,29 +5,8 @@ class Header extends Component {
         super(props);
 
         this.state = {
-            loading: null,
-            name: null,
-            iduser: null,
-            isadmin: false,
+            loading: null
         }
-    }
-
-    componentDidMount() {
-        fetch('/api/checktoken')
-            .then(res => {
-                if (res.status === 200) {
-                    res.json().then(json => {
-                        this.setState({
-                            loading: false,
-                            name: json.name,
-                            iduser: json.iduser,
-                            isadmin: json.isadmin
-                        });
-                    });                    
-                } else {
-                    this.setState({ loading: false });
-                }
-            });
     }
 
     handleLogout() {
@@ -54,11 +33,11 @@ class Header extends Component {
         );
         
         const LoginArea = () => (
-            (this.state.loading || !this.state.name ? null
+            (this.state.loading || !this.props.user.name ? null
                 :
                 <div className='header-link right'>
                     <div className='header-username'>
-                        Hello, {this.state.name}
+                        Hello, {this.props.user.name}
                     </div>
                     <div className='header-controls-logout'>
                         <a onClick={() => this.handleLogout()} href='#'>Logout</a>
@@ -80,7 +59,7 @@ class Header extends Component {
                 <div className='header-link'>
                     <a href='/leaderboard/'>Leaderboard</a>
                 </div>
-                {this.state.isadmin && AdminArea()}
+                {this.props.user.isadmin && AdminArea()}
                 {LoginArea()}
             </div>
         );
