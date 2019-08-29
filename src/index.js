@@ -8,8 +8,9 @@ import withAuth from './components/shared/withAuth';
 import Home from './components/home';
 import Page from './components/shared/page';
 import Leaderboard from './components/leaderboard';
-import PickemsAdmin from './components/pickemsAdmin';
+import PickemsAdmin from './components/admin/pickemsAdmin';
 import PickemsContainer from './components/shared/pickemsContainer';
+import MatchupsAdmin from './components/admin/matchupsAdmin';
 
 ReactDOM.render(
     <Router>
@@ -50,6 +51,13 @@ ReactDOM.render(
                     path='/admin/pickems'
                     render={(props) => (
                         <Page {...props} component={withAuth(PickemsAdmin)} title={'Pick\'ems Admin - League of Goons'} />
+                    )}
+                />
+                <Route
+                    exact
+                    path='/admin/matchups'
+                    render={(props) => (
+                        <Page {...props} component={withAuth(MatchupsAdmin)} title={'Matchups Admin - League of Goons'} />
                     )}
                 />
             </Switch>

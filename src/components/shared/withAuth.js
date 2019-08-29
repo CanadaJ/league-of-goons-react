@@ -7,7 +7,8 @@ export default function withAuth(ProtectedComponent) {
             super();
             this.state = {
                 loading: true,
-                redirect: false
+                redirect: false,
+                user: null
             };
         }
 
@@ -15,13 +16,18 @@ export default function withAuth(ProtectedComponent) {
             fetch('/api/checktoken')
                 .then(res => {
                     if (res.status === 200) {
-                        this.setState({
-                            loading: false
-                        });
+                        return res.json();
                     } else {
-                        console.error(res.error);
                         this.setState({ loading: false, redirect: true });
+                        return null;
                     }
+                })
+                .then(json => {
+                    if (!json) return;
+
+                    console.log(json);
+
+                    this.setState({ user: json.user, loading: false });
                 });
         }
 
@@ -33,7 +39,7 @@ export default function withAuth(ProtectedComponent) {
                 if (redirect) {
                     view = <Redirect to='/login' />
                 } else {
-                    view = <ProtectedComponent {...this.props} />
+                    view = <ProtectedComponent user={this.state.user} />
                 }
             }
 

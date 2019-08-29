@@ -118,56 +118,29 @@ class PickemsAdmin extends Component {
         );
     }
 
-    formatWeekName = (week) =>
-    {
-        if (week <= 17) return `Week ${week}`;
-
-        if (week === 18) return 'Wild Card';
-        if (week === 19) return 'Divisional';
-        if (week === 20) return 'Conference';
-        if (week === 22) return 'Super Bowl';
-    }
-
     render() {
-        const weeks = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 22];
-
-        const WeekLink = (week) => {
-            if (week <= 17) return (<a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Week {week}</a>);
-
-            if (week === 18) return <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Wild Card</a>;
-            if (week === 19) return <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Divisional</a>;
-            if (week === 20) return <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Conference</a>;
-            if (week === 22) return <a key={`week-link-${week}`} className='week-link' onClick={() => this.changeWeek(week)}>Super Bowl</a>;
-        };
-
         if (this.state.loading) {
 
             return <div className='loading'>Loading&#8230;</div>;
         }
 
         return(
-            <div className='jumbotron-center-compact'>
-                <h1>Admin - League of Goons Pick'ems ({this.formatWeekName(this.state.week)})</h1>
-                <div className='controls-container'>
-                    {weeks.map((week) => WeekLink(week))}
+            <div className='pickems-area'>
+                <div className='pickem-week'>
+                    <a href={`/pickems/week/#week${this.state.week}/`}>WEEK {this.state.week}</a>
                 </div>
-                <div className='pickems-area'>
-                    <div className='pickem-week'>
-                        <a href={`/pickems/week/#week${this.state.week}/`}>WEEK {this.state.week}</a>
+                <div className='pickem-homeaway'>
+                    <div className='pickem-timelabel'>
+                        Time
                     </div>
-                    <div className='pickem-homeaway'>
-                        <div className='pickem-timelabel'>
-                            Time
-                        </div>
-                        <div className='pickem-away'>
-                            Away
-                        </div>
-                        <div className='pickem-home'>
-                            Home
-                        </div>
+                    <div className='pickem-away'>
+                        Away
                     </div>
-                    {this.buildPickemRows()}
+                    <div className='pickem-home'>
+                        Home
+                    </div>
                 </div>
+                {this.buildPickemRows()}
             </div>
         );
     }

@@ -302,7 +302,7 @@ app.post('/api/authenticate', (req, res) => {
 });
 
 app.get('/api/checktoken', withAuth, (req, res) => {
-    res.status(200).json(res.user);
+    res.status(200).json({ user: res.user });
 });
 
 app.get('/api/logout', withAuth, (req, res) => {

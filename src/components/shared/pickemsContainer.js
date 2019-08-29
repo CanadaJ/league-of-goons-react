@@ -49,7 +49,7 @@ class PickemsContainer extends Component {
             },
             body: JSON.stringify({
                 idMatchup: pickem.idmatchup,
-                idUser: this.props.idUser,
+                idUser: this.props.user.iduser,
                 idTeam: idTeam
             })
         })
@@ -73,6 +73,7 @@ class PickemsContainer extends Component {
                     pickems={this.state.pickems}
                     week={this.state.week}
                     loading={this.state.loading}
+                    updatePickem={this.updatePickem}
                 />
             </div>
         );
