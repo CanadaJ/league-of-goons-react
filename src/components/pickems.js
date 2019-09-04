@@ -60,13 +60,9 @@ class Pickems extends Component {
     render() {
         const pickCounts = this.props.pickCounts;
 
-        if (this.props.loading || this.state.loading) {
-
-            return <div className='loading'>Loading&#8230;</div>;
-        }
-
         return(
             <div className='pickems-area'>
+                {(this.props.loading || this.state.loading) && <div className='loading'>Loading&#8230;</div>}
                 <div className='pickem-counts'>
                     <div>
                         Correct: <span className='pickem-counts-correct'>{pickCounts.correct}</span>

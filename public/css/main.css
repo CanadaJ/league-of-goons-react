@@ -10,10 +10,22 @@
     margin-top: 20%;
 }
 
+@media (max-width: 800px) {
+    .jumbotron-center {
+        width: auto;
+    }
+}
+
 .jumbotron-center-compact {
     margin-top: 150px;
     width: auto;
     max-width: 1000px;
+}
+
+@media (max-width: 800px) {
+    .jumbotron-center-compact {
+        margin-top: 10px;
+    }
 }
 
 .jumbotron-center-medium {
@@ -99,6 +111,12 @@
     flex-direction: column;
 }
 
+@media (max-width: 800px) {
+    .login-controls {
+        width: 100%;
+    }
+}
+
 .login-control input, .login-control button {
     padding: 10px;
     font-family: 'Open Sans', sans-serif !important;
@@ -121,6 +139,12 @@
     align-items: center;
     font-size: 20px;
     height: 7rem;
+}
+
+@media (max-width: 800px) {
+    .pickem, .pickem-alt {
+        font-size: 12px;
+    }
 }
 
 .pickem {
@@ -180,6 +204,12 @@
 .pickem-time, .pickem-complete {
     width: 20%;
     font-size: 16px;
+}
+
+@media (max-width: 800px) {
+    .pickem-time, .pickem-complete {
+        font-size: 12px;
+    }
 }
 
 .pickem-complete.is-correct, .pickem-complete.is-incorrect {
@@ -377,6 +407,14 @@ box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0
     top: 0;
     width: 100%;
     color: white;
+    position: relative;
+}
+
+@media (max-width: 800px) {
+    .header {
+        height: 50px;
+        font-size: 14px;
+    }
 }
 
 .header-link {
@@ -389,6 +427,12 @@ box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0
     min-width: 8rem;
     height: 100%;
     align-items: center;
+}
+
+@media (max-width: 800px) {
+    .header-link {
+        min-width: 2rem;
+    }
 }
 
 .header-link:last-child {
@@ -408,6 +452,8 @@ box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0
     align-items: flex-start;
     padding: 0;
     min-width: 12rem;
+    position: relative;
+    z-index: 999999;
 }
 
 .header-link.dropdown-content ul {
@@ -434,6 +480,12 @@ box-shadow: rgba(0, 0, 0, 0.75) 1.5em 0 0 0, rgba(0, 0, 0, 0.75) 1.1em 1.1em 0 0
     width: auto;
     width: 20rem;
     padding-right: 0;
+}
+
+@media (max-width: 800px) {
+    .header-link.right {
+        width: 10rem;
+    }
 }
 
 .header-username, .header-controls-login, .header-controls-logout  {
