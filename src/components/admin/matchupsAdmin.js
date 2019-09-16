@@ -48,7 +48,6 @@ class MatchupsAdmin extends Component {
     }
 
     getMatchups(week) {
-        console.log('getmatchups')
         this.setState({ loading: true });
 
         fetch(`/api/admin/pickems/week/${week}`)

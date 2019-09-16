@@ -50,7 +50,7 @@ ReactDOM.render(
                     exact
                     path='/admin/pickems'
                     render={(props) => (
-                        <Page {...props} component={withAuth(PickemsAdmin)} title={'Pick\'ems Admin - League of Goons'} />
+                        <Page {...props} component={withAuth(PickemsAdmin, true)} title={'Pick\'ems Admin - League of Goons'} />
                     )}
                 />
                 <Route

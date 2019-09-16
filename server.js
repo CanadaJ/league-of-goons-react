@@ -5,7 +5,7 @@ const cookies = require('cookie-parser');
 const logger = require('morgan');
 const path = require('path');
 const mysql = require('mysql');
-const withAuth = require('./src/components/middleware');
+const {WithAuth, IsAdmin} = require('./src/components/middleware');
 const Sequelize = require('sequelize');
 const jwt = require('jsonwebtoken');
 
@@ -46,7 +46,7 @@ app.use(cookies());
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
 
-app.post('/api/pickems/update', withAuth, function(req, res) {
+app.post('/api/pickems/update', WithAuth, function(req, res) {
     if (!req.body) {
         res.send({ success: false });
         return;
@@ -74,7 +74,7 @@ app.post('/api/pickems/update', withAuth, function(req, res) {
     });
 });
 
-app.get('/api/admin/pickems/week/:week*?', (req, res) => {
+app.get('/api/admin/pickems/week/:week*?', IsAdmin, (req, res) => {
     let weekNum = req.params['week'];
 
     if (!weekNum || weekNum <= 0) {
@@ -106,7 +106,7 @@ app.get('/api/admin/pickems/week/:week*?', (req, res) => {
     });
 });
 
-app.post('/api/admin/setmatchupwinner', (req, res) => {
+app.post('/api/admin/setmatchupwinner', IsAdmin, (req, res) => {
     var pickRequest = req.body;
 
     if (!pickRequest.winner || !pickRequest.idMatchup) {
@@ -301,11 +301,11 @@ app.post('/api/authenticate', (req, res) => {
     });
 });
 
-app.get('/api/checktoken', withAuth, (req, res) => {
+app.get('/api/checktoken', WithAuth, (req, res) => {
     res.status(200).json({ user: res.user });
 });
 
-app.get('/api/logout', withAuth, (req, res) => {
+app.get('/api/logout', WithAuth, (req, res) => {
     res.clearCookie('token').sendStatus(200);
 });
 

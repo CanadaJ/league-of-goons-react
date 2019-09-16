@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Redirect } from 'react-router-dom';
 
-export default function withAuth(ProtectedComponent) {
+export default function withAuth(ProtectedComponent, IsAdmin = false) {
     return class extends Component {
         constructor() {
             super();
@@ -25,7 +25,11 @@ export default function withAuth(ProtectedComponent) {
                 .then(json => {
                     if (!json) return;
 
-                    this.setState({ user: json.user, loading: false });
+                    this.setState({
+                        user: json.user,
+                        loading: false,
+                        redirect: IsAdmin && !json.user.isadmin
+                    });
                 });
         }
 
@@ -35,7 +39,7 @@ export default function withAuth(ProtectedComponent) {
             
             if (!loading) {
                 if (redirect) {
-                    view = <Redirect to='/login' />
+                    view = <Redirect to={IsAdmin ? '/' : '/login'} />
                 } else {
                     view = <ProtectedComponent user={this.state.user} />
                 }
