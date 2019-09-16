@@ -86,7 +86,7 @@ app.get('/api/admin/pickems/week/:week*?', IsAdmin, (req, res) => {
     connection.query('call admin_getmatchupwinners_weekly(?)', [weekNum], (err, rows) => {
         if (err) throw err;
 
-        for (var idx in rows[0]) {
+        for (let idx in rows[0]) {
             matchups.push({
                 idMatchup: rows[0][idx].idmatchup,
                 homeTeam: rows[0][idx].home,
@@ -107,7 +107,7 @@ app.get('/api/admin/pickems/week/:week*?', IsAdmin, (req, res) => {
 });
 
 app.post('/api/admin/setmatchupwinner', IsAdmin, (req, res) => {
-    var pickRequest = req.body;
+    let pickRequest = req.body;
 
     if (!pickRequest.winner || !pickRequest.idMatchup) {
         return res.send({
@@ -130,8 +130,7 @@ app.post('/api/admin/setmatchupwinner', IsAdmin, (req, res) => {
     });
 });
 
-app.get('/api/pickems/week/:week*?', (req, res) => {
-
+app.get('/api/pickems/week/:week*?', WithAuth, (req, res) => {
     let weekNum = req.params['week'];
 
     if (!weekNum || weekNum <= 0) {
@@ -140,9 +139,9 @@ app.get('/api/pickems/week/:week*?', (req, res) => {
 
     let userPicks = [];
 
-    connection.query('call matchups_matchupsbyweek(?,?)', [1, weekNum], function(err, rows) {
+    connection.query('call matchups_matchupsbyweek(?,?)', [res.user.iduser, weekNum], function(err, rows) {
         if (err) throw err;
-        for (var idx in rows[0]) {
+        for (let idx in rows[0]) {
             userPicks.push({ 
                 idmatchup: rows[0][idx].idmatchup,
                 week: rows[0][idx].week,
@@ -153,7 +152,7 @@ app.get('/api/pickems/week/:week*?', (req, res) => {
                 canupdate: rows[0][idx].canupdate,
                 idhometeam: rows[0][idx].idhometeam,
                 idawayteam: rows[0][idx].idawayteam,
-                userid: 1,
+                userid: res.user.iduser,
                 winner: rows[0][idx].winner,
                 idpickteam: rows[0][idx].idpickteam,
                 istie: rows[0][idx].istie
@@ -172,8 +171,8 @@ app.get('/api/pickems/week/:week*?', (req, res) => {
     });    
 });
 
-app.get('/api/pickems/weekly/:week*?', (req, res) => {
-    var weekNum = req.params['week'];
+app.get('/api/pickems/weekly/:week*?', WithAuth, (req, res) => {
+    let weekNum = req.params['week'];
 
     if (!weekNum || weekNum < 0) {
         return res.send({
@@ -183,9 +182,9 @@ app.get('/api/pickems/weekly/:week*?', (req, res) => {
         });
     }
 
-    var users = [];
-    var matchups = [];
-    var userPicks = [];
+    let users = [];
+    let matchups = [];
+    let userPicks = [];
 
     connection.query('CALL pickem_picksbyweek(?)', [weekNum], function(err, rows) {
         if (err) throw err;
@@ -230,17 +229,17 @@ app.get('/api/pickems/weekly/:week*?', (req, res) => {
     });
 });
 
-app.get('/api/leaderboard', function(req, res) {
+app.get('/api/leaderboard', WithAuth, (req, res) => {
 
-    var leaderboard = [];
-    var lastNumCorrect = -1;
-    var rank = 1;
-    var rankDelta = 1;
+    let leaderboard = [];
+    let lastNumCorrect = -1;
+    let rank = 1;
+    let rankDelta = 1;
 
     connection.query('CALL pickem_pickranks', function(err, rows) {
         if (err) throw err;
-        for (var idx in rows[0]) {
-            var row = rows[0][idx];
+        for (let idx in rows[0]) {
+            let row = rows[0][idx];
 
 
             if (lastNumCorrect === row.numCorrect) {
