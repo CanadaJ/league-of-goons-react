@@ -23,10 +23,6 @@ class MatchupsAdmin extends Component {
         this.getMatchups(week);
     }
 
-    getMatchups = (week) => {
-        this.setState({ loading: false });
-    }
-
     updateMatchup = (pickem, idTeam) => {
         if (pickem.winner === idTeam) {
             return false;
@@ -46,27 +42,14 @@ class MatchupsAdmin extends Component {
         .then(response => response.json())
         .then((data) => {
             if (data.success) {
-                this.updatePickems(this.state.week);
+                this.getMatchups(this.state.week);
             }
         });
     }
 
-    updatePickems(week) {
-        var hashValue = window.location.hash ? window.location.hash.substr(1) : '';
-
-        if (hashValue) {
-            const rgx = new RegExp(/^week([0-9]+)/);
-
-            if (rgx.test(hashValue)) {
-                const weekHash = rgx.exec(hashValue)[1];
-
-                if (weekHash && parseInt(weekHash) <= 22) {
-                     week = weekHash;
-                } else {
-                    window.location.hash = `week${week}`;
-                }
-            }
-        }
+    getMatchups(week) {
+        console.log('getmatchups')
+        this.setState({ loading: true });
 
         fetch(`/api/admin/pickems/week/${week}`)
             .then(response => response.json())

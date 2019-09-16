@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import WeekSelector from '../shared/weekSelector';
 
 class PickemsAdmin extends Component {
     state = {
@@ -7,7 +8,27 @@ class PickemsAdmin extends Component {
     }
 
     componentDidMount() {
-        this.setState({ loading: false });
+        this.getMatchups(this.state.week);
+    }
+
+    changeWeek = (week) => {
+        if (week === this.state.week) return false;
+
+        this.getMatchups(week);
+    }
+
+    getMatchups = (week) => {
+        this.setState({ loading: true });
+
+        fetch(`/api/admin/pickems/week/${week}`)
+            .then(response => response.json())
+            .then(data => {
+                this.setState({
+                    matchups: data.matchups,
+                    week: parseInt(week),
+                    loading: false
+                });
+            });
     }
 
     formatDate(date) {
@@ -22,19 +43,37 @@ class PickemsAdmin extends Component {
         return (date.getMonth() + 1) + '/' + date.getDate() + '/' + date.getFullYear() + ' ' + hours + ':' + minutes + ' ' + meridian;
     }
 
-    doUpdateMatchup = (e, matchup, idTeam) => {
-        e.persist();
+    doUpdateMatchup = (matchup, idTeam) => {
+        if (matchup.winner === idTeam) {
+            return false;
+        }
 
-        this.props.updateMatchup(matchup, idTeam);
+        fetch('/api/admin/setmatchupwinner', {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                idMatchup: matchup.idMatchup,
+                winner: idTeam
+            })
+        })
+        .then(response => response.json())
+        .then((data) => {
+            if (data.success) {
+                this.getMatchups(this.state.week);
+            }
+        });
     }
 
-    buildPickemRows() {
-        if (this.props.matchups) {
-            return this.props.matchups.map((matchup, idx) => this.buildPickemRow(matchup, idx));
+    buildMatchupRows() {
+        if (this.state.matchups) {
+            return this.state.matchups.map((matchup, idx) => this.buildMatchupRow(matchup, idx));
         }
     }
 
-    buildPickemRow(pickem, idx) {
+    buildMatchupRow(pickem, idx) {
 
         const rowClassName = idx % 2 === 1 ? 'pickem' : 'pickem-alt';
 
@@ -44,13 +83,13 @@ class PickemsAdmin extends Component {
                     <div className='pickem-time'>{this.formatDate(pickem.gameTime)}</div>
                 </div>
                 <div
-                    onClick={(e) => this.doUpdatePickem(e, pickem, pickem.awayTeam)}
+                    onClick={(e) => this.doUpdateMatchup(pickem, pickem.awayTeam)}
                     className={`pickem-team admin ${pickem.awayTeam === pickem.winner || pickem.isTie ? 'is-winner' : ''}`}
                 >
                         {pickem.awayName}
                 </div>
                 <div
-                    onClick={(e) => this.doUpdatePickem(e, pickem, pickem.homeTeam)}
+                    onClick={(e) => this.doUpdateMatchup(pickem, pickem.homeTeam)}
                     className={`pickem-team admin ${pickem.homeTeam === pickem.winner || pickem.isTie ? 'is-winner' : ''}`}
                 >
                         {pickem.homeName}
@@ -66,22 +105,26 @@ class PickemsAdmin extends Component {
         }
 
         return(
-            <div className='pickems-area'>
-                <div className='pickem-week'>
-                    <a href={`/pickems/week/#week${this.props.week}/`}>WEEK {this.props.week}</a>
+            <div className='jumbotron-center-compact'>
+                <h1>League of Goons Pick'ems Admin</h1>
+                <WeekSelector changeWeek={this.changeWeek} />
+                <div className='pickems-area'>
+                    <div className='pickem-week'>
+                        <a href={`/pickems/week/#week${this.state.week}/`}>WEEK {this.state.week}</a>
+                    </div>
+                    <div className='pickem-homeaway'>
+                        <div className='pickem-timelabel'>
+                            Time
+                        </div>
+                        <div className='pickem-away'>
+                            Away
+                        </div>
+                        <div className='pickem-home'>
+                            Home
+                        </div>
+                    </div>
+                    {this.buildMatchupRows()}
                 </div>
-                <div className='pickem-homeaway'>
-                    <div className='pickem-timelabel'>
-                        Time
-                    </div>
-                    <div className='pickem-away'>
-                        Away
-                    </div>
-                    <div className='pickem-home'>
-                        Home
-                    </div>
-                </div>
-                {this.buildPickemRows()}
             </div>
         );
     }
