@@ -5,7 +5,6 @@ import Login from './components/login';
 import Header from './components/shared/header';
 import PickemsWeekly from './components/pickemsWeekly';
 import withAuth from './components/shared/withAuth';
-import Home from './components/home';
 import Page from './components/shared/page';
 import Leaderboard from './components/leaderboard';
 import PickemsAdmin from './components/admin/pickemsAdmin';
@@ -17,17 +16,10 @@ ReactDOM.render(
         <div>
             <Route path='/' component={Header} />
             <Switch>
-                <Route
-                    exact
-                    path='/'
-                    render={(props) => (
-                        <Page {...props} component={Home} title={'Home - League of Goons'} />
-                    )}
-                />
                 <Route path='/login' component={Login} />
                 <Route
                     exact
-                    path='/pickems'
+                    path='/'
                     render={(props) => (
                         <Page {...props} component={withAuth(PickemsContainer)} title={'Pick\'ems - League of Goons'} />
                     )}

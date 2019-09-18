@@ -49,7 +49,7 @@ class Login extends Component {
         }
 
         return(
-            <div className='jumbotron-center'>
+            <div className='jumbotron-center-compact'>
                 <h1>League of Goons</h1>
                 <div className='login-form'>
                     <div className='login-controls'>
